@@ -1,0 +1,38 @@
+import mysql.connector
+
+# Koneksi ke database
+cnx = mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    password = "",
+    database =  "equipment"
+)
+
+cursor = cnx.cursor()
+
+# Membuat tabel
+create_table = """
+CREATE TABLE equipment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    primar VARCHAR(255),
+    secondary VARCHAR(255)
+)
+"""
+cursor.execute(create_table)
+
+# Menambahkan data
+add_user = "INSERT INTO equipment (primar, secondary) VALUES (%s, %s)"
+user_data = ("Tavor", "papasha")
+cursor.execute(add_user, user_data)
+cnx.commit()
+
+# Mengambil data
+query = "SELECT * FROM equipment"
+cursor.execute(query)
+
+for (id, primar, secondary) in cursor:
+    print("ID: {}, primar: {}, secondary: {}".format(id, primar, secondary))
+
+# Menutup koneksi
+cursor.close()
+cnx.close()
